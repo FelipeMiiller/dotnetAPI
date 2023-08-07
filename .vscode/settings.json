@@ -1,4 +1,4 @@
 {
-    "dotnet.defaultSolution": "src/DotNet-Api.sln",
+    "dotnet.defaultSolution": "dotnetAPI.sln",
     "dotnet-test-explorer.testProjectPath": "**/test"
 }
