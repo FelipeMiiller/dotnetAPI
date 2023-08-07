@@ -1,7 +1,4 @@
 
-
-using Api.Modules.UserModule.Domain.Repository.Dtos;
-
 namespace Api.Modules.UserModule.Domain.Entities
 {
     public class User
@@ -14,8 +11,10 @@ namespace Api.Modules.UserModule.Domain.Entities
 
         public User(string? Name, string Email)
         {
+            this.Id = Guid.NewGuid();
             this.Name = Name ?? string.Empty;
             this.Email = Email;
+            this.CreateAt = DateTime.Now;
         }
 
         public User(Guid Id, string? Name, string? Email)
@@ -23,7 +22,6 @@ namespace Api.Modules.UserModule.Domain.Entities
             this.Id = Id;
             this.Name = Name ?? string.Empty;
             this.Email = Email ?? string.Empty;
-
         }
 
     }

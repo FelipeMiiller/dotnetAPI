@@ -1,6 +1,5 @@
 using Api.Common.Infra.DataBase;
-
-using Api.Modules.User.Domain.Repository;
+using Api.Modules.UserModule.Domain.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 

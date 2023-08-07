@@ -19,11 +19,12 @@ namespace Api.Common.Infra.DataBase
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasKey(x => x.Id);
-            modelBuilder.Entity<User>().Property(x => x.Id).HasDefaultValue(Guid.NewGuid());
             modelBuilder.Entity<User>().Property(x => x.Name);
             modelBuilder.Entity<User>().Property(x => x.Email).IsRequired();
-            modelBuilder.Entity<User>().Property(x => x.CreateAt).HasDefaultValue(DateTime.Now);
+            
         }
+
+       
 
         public override int SaveChanges()
         {
@@ -33,6 +34,8 @@ namespace Api.Common.Infra.DataBase
                 if (entry.Entity is User user)
                 {
                     user.UpdateAt = DateTime.Now;
+
+                    
                 }
             }
             return base.SaveChanges();

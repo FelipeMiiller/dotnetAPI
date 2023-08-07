@@ -8,7 +8,7 @@ namespace Api.Modules.UserModule.Domain.Repository
     {
         Task<string> Create(CreateUserDto user);
         Task<User?> FindById(Guid Id);
-        Task<User?> FindByEmail(string email);
+        Task<User?> FindByEmail(string Email);
         Task<string> Update(UpdateUserDto user);
         Task<IList<User>> FindAll();
         Task<string> Delete(Guid Id);

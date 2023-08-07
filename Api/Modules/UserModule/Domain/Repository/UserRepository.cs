@@ -17,7 +17,7 @@ namespace Api.Modules.UserModule.Domain.Repository
         public async Task<string> Create(CreateUserDto user)
         {
 
-            if (await ExistFoEmail(user.Email))
+            if (!await ExistFoEmail(user.Email))
             {
                 var newUser = new User(user.Name, user.Email);
                 _context.Users.Add(newUser);
@@ -79,9 +79,9 @@ namespace Api.Modules.UserModule.Domain.Repository
             return "All Users Deleted";
         }
 
-        private async Task<bool> ExistFoEmail(string email)
+        private async Task<bool> ExistFoEmail(string Email)
         {
-            return await _context.Users.AnyAsync(u => u.Email == email);
+            return await _context.Users.AnyAsync(u => u.Email == Email);
         }
 
     }
