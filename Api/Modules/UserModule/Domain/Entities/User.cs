@@ -1,4 +1,6 @@
 
+using TaskEntity = Api.Modules.TaskModule.Domain.Entities.Task;
+
 namespace Api.Modules.UserModule.Domain.Entities
 {
     public class User
@@ -6,6 +8,7 @@ namespace Api.Modules.UserModule.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public ICollection<TaskEntity> Posts { get; } = new List<TaskEntity>();
         public DateTime? CreateAt { get; set; }
         public DateTime? UpdateAt { get; set; }
 
@@ -13,8 +16,8 @@ namespace Api.Modules.UserModule.Domain.Entities
         {
             this.Id = Guid.NewGuid();
             this.Name = Name ?? string.Empty;
-            this.Email = Email;
-            this.CreateAt = DateTime.Now;
+            this.Email = Email ?? string.Empty;
+
         }
 
         public User(Guid Id, string? Name, string? Email)

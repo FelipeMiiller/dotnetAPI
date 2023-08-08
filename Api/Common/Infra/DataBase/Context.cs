@@ -34,6 +34,15 @@ namespace Api.Common.Infra.DataBase
                 if (entry.Entity is User user)
                 {
                     user.UpdateAt = DateTime.Now;
+                    
+                     foreach (var property in entry.OriginalValues.Properties)
+                    {
+                        var currentValue = entry.CurrentValues[property];
+                        if (currentValue  == null || currentValue == "") 
+                        {
+                            entry.CurrentValues[property] = entry.OriginalValues[property];
+                        }
+                    }
 
                     
                 }
