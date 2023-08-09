@@ -35,7 +35,7 @@ namespace Api.Modules.TaskModule.HTTP
             }
             return NotFound("Task not found");
         }
-        [HttpPut()]
+        [HttpPatch()]
         public async Task<IActionResult> UpdateTask(UpdateTaskDto task)
         {
             var result = await _taskRepository.Update(task);

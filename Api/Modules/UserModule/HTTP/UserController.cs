@@ -25,7 +25,7 @@ namespace Api.Modules.UserModule.HTTP
             return Created("created", newUser);
         }
 
-        [HttpPut]
+        [HttpPatch]
         public async Task<IActionResult> UpdateUser(UpdateUserDto user)
         {
             var updatedUser = await _userRepository.Update(user);
