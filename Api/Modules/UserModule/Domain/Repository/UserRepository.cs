@@ -19,7 +19,12 @@ namespace Api.Modules.UserModule.Domain.Repository
 
             if (!await ExistFoEmail(user.Email))
             {
-                var newUser = new User(user.Name, user.Email);
+                var newUser = new User()
+                {
+                    Name = user.Name ?? string.Empty,
+                    Email = user.Email,
+                    CreateAt = DateTime.Now
+                };
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
 
@@ -31,7 +36,7 @@ namespace Api.Modules.UserModule.Domain.Repository
 
         public async Task<User?> FindById(Guid Id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            return await _context.Users.FindAsync(Id);
         }
 
         public async Task<User?> FindByEmail(string email)
@@ -41,12 +46,17 @@ namespace Api.Modules.UserModule.Domain.Repository
 
         public async Task<string> Update(UpdateUserDto userDto)
         {
-            var user = FindById(userDto.Id);
+            var user = await FindById(userDto.Id);
 
 
             if (user != null)
             {
-                var update = new User(userDto.Id, userDto.Name, userDto.Email);
+                var update = new User()
+                {
+                    Id = userDto.Id,
+                    Name = userDto.Name ?? user.Name,
+                    Email = userDto.Email ?? user.Email,
+                };
                 _context.Users.Update(update);
                 await _context.SaveChangesAsync();
 

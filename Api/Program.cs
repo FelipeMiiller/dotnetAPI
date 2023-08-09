@@ -1,10 +1,12 @@
 using Api.Common.Infra.DataBase;
 using Api.Modules.UserModule.Domain.Repository;
+using Api.Modules.TaskModule.Domain.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<Context>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,6 +32,9 @@ app.UseCors("corsapp");
 
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/", () => "Api is running");
+
+app.Run();
 
 
 

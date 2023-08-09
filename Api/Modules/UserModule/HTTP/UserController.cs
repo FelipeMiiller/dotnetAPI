@@ -31,10 +31,10 @@ namespace Api.Modules.UserModule.HTTP
             var updatedUser = await _userRepository.Update(user);
             return Ok(updatedUser);
         }
-        [HttpGet]
-        public async Task<IActionResult> FindById(Guid Id)
+        [HttpGet ("{id}")]
+        public async Task<IActionResult> FindById(Guid id)
         {
-            var users = await _userRepository.FindById(Id);
+            var users = await _userRepository.FindById(id);
             return Ok(users);
         }
 
