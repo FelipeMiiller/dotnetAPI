@@ -21,23 +21,8 @@ namespace Api.Modules.UserModule.Domain.Repository.Dtos
             this.UpdateAt = UpdateAt;
         }
     }
-    public record CreateUserDto
-    {
-        public string? Name { get; set; }
-        public string Email { get; set; } = string.Empty;
-    }
-
-    public record UpdateUserDto
-    {
-        public Guid Id { get; set; }
-        public string? Name { get; set; }
-        public string? Email { get; set; } 
+    public record CreateUserDto(string? Name, string Email) { }
 
 
-        public UpdateUserDto(Guid Id, string? Name, string? Email){
-            this.Id = Id;
-            this.Name = Name;
-            this.Email = Email;
-        }
-    }
+    public record UpdateUserDto(Guid Id, string? Name, string? Email) { }
 }

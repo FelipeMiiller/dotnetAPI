@@ -6,7 +6,7 @@ namespace Api.Modules.UserModule.Domain.Repository
 {
     public interface IUserRepository
     {
-        Task<string> Create(CreateUserDto user);
+        Task Create(CreateUserDto user);
         Task<User?> FindById(Guid Id);
         Task<User?> FindByEmail(string Email);
         Task<string> Update(UpdateUserDto user);

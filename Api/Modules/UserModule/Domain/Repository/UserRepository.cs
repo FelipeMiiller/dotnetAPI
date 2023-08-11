@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Api.Common.Infra.DataBase;
 using Api.Modules.UserModule.Domain.Repository.Dtos;
 using Api.Modules.UserModule.Domain.Entities;
+using Api.Util.Error;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.Data.Sqlite;
+using System.Net;
 
 namespace Api.Modules.UserModule.Domain.Repository
 {
@@ -14,24 +18,34 @@ namespace Api.Modules.UserModule.Domain.Repository
             _context = context;
         }
 
-        public async Task<string> Create(CreateUserDto user)
+        public async Task Create(CreateUserDto user)
         {
-
-            if (!await ExistFoEmail(user.Email))
+            try
             {
-                var newUser = new User()
+                if (!await ExistFoEmail(user.Email))
                 {
-                    Name = user.Name ?? string.Empty,
-                    Email = user.Email,
-                    CreateAt = DateTime.Now
-                };
-                _context.Users.Add(newUser);
-                await _context.SaveChangesAsync();
+                    var newUser = new User(user.Name, user.Email);
+                    _context.Users.Add(newUser);
+                    await _context.SaveChangesAsync();
+                }
+                throw new Exception("User Already Found");
 
-                return "User Created";
             }
-            return "User Not Found";
+            catch (Exception e)
+            {
+                if (e.GetType() == typeof(SqliteException))
+                {
+                    var error = new
+                    {
+                        Code = (int)HttpStatusCode.UnprocessableEntity,
+                        Title = "DB Error",
+                        Message = "Erro inesperado."
+                    };
+                    throw new AppExceptionDB((int)HttpStatusCode.UnprocessableEntity, e.Message);
+                }
 
+                throw new AppExceptionDB((int)HttpStatusCode.NotFound, e.Message);
+            }
         }
 
         public async Task<User?> FindById(Guid Id)
@@ -51,12 +65,13 @@ namespace Api.Modules.UserModule.Domain.Repository
 
             if (user != null)
             {
-                var update = new User()
-                {
-                    Id = userDto.Id,
-                    Name = userDto.Name ?? user.Name,
-                    Email = userDto.Email ?? user.Email,
-                };
+                var update = new User
+                (
+                 userDto.Id,
+                 userDto.Name ?? user.Name,
+                 userDto.Email ?? user.Email
+                );
+
                 _context.Users.Update(update);
                 await _context.SaveChangesAsync();
 

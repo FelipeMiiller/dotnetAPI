@@ -1,10 +1,12 @@
 using Api.Common.Infra.DataBase;
 using Api.Modules.UserModule.Domain.Repository;
 using Api.Modules.TaskModule.Domain.Repository;
+using Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<Context>();
@@ -25,13 +27,23 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+
+
+
+
 //app cors
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("corsapp");
 
 app.UseAuthorization();
+
+//Middlewares
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+
 app.MapControllers();
+
 app.MapGet("/", () => "Api is running");
 
 app.Run();

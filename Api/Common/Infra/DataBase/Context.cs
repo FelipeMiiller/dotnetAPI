@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Api.Modules.UserModule.Domain.Entities;
 using Api.Modules.TaskModule.Domain.Entities;
+using EntityFramework.Exceptions.Sqlite;
 
 namespace Api.Common.Infra.DataBase
 {
@@ -13,6 +14,7 @@ namespace Api.Common.Infra.DataBase
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseExceptionProcessor();
             optionsBuilder.UseSqlite("Data Source=../DataBase/LocalDatabase.db");
         }
 
@@ -22,12 +24,14 @@ namespace Api.Common.Infra.DataBase
             modelBuilder.Entity<User>().HasKey(x => x.Id);
             modelBuilder.Entity<User>().Property(x => x.Name);
             modelBuilder.Entity<User>().Property(x => x.Email).IsRequired();
-            modelBuilder.Entity<User>().HasMany(e => e.Tasks).WithOne(e => e.User).HasForeignKey(e => e.UserId).IsRequired();
+            modelBuilder.Entity<User>().HasMany(x => x.Tasks).WithOne(e => e.User).HasForeignKey(e => e.UserId).IsRequired();
+            modelBuilder.Entity<User>().Property(x => x.CreateAt).HasDefaultValue(DateTime.Now);
 
             modelBuilder.Entity<TaskEntity>().HasKey(x => x.Id);
             modelBuilder.Entity<TaskEntity>().Property(x => x.Title).IsRequired();
             modelBuilder.Entity<TaskEntity>().Property(x => x.Description).IsRequired();
             modelBuilder.Entity<TaskEntity>().Property(x => x.UserId).IsRequired();
+            modelBuilder.Entity<User>().Property(x => x.CreateAt).HasDefaultValue(DateTime.Now);
 
 
         }

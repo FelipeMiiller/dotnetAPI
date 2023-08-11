@@ -20,9 +20,10 @@ namespace Api.Modules.UserModule.HTTP
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
-            var newUser = await _userRepository.Create(user);
+      
+               await _userRepository.Create(user);
 
-            return Created("created", newUser);
+            return Created("created","User Created");
         }
 
         [HttpPatch]
